@@ -1,22 +1,48 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getReservationsByUser } from "../../services/reservationService";
+import {
+  getReservationsByUser,
+  cancelReservation,
+} from "../../services/reservationService";
 import { initialCars } from "../../data/mockReservations";
 import "./Reservation.css";
 
 function Reservations() {
-  // Kol dar neturime prisijungimo funkcionalumo,
-  // naudojame demonstracinio naudotojo ID.
   const currentUserId = 1;
 
-  const [reservations] = useState(() => getReservationsByUser(currentUserId));
+  const [reservations, setReservations] = useState(() =>
+    getReservationsByUser(currentUserId),
+  );
+
+  const [error, setError] = useState("");
+
+  function handleCancel(id) {
+    const confirmed = window.confirm(
+      "Ar tikrai norite atšaukti šią rezervaciją?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      cancelReservation(id);
+      setReservations(getReservationsByUser(currentUserId));
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   return (
     <main className="page-container">
       <h1>Mano rezervacijos</h1>
+
       <p className="page-description">
         Čia galite peržiūrėti savo automobilių rezervacijas.
       </p>
+
+      {error && <p className="error-message">{error}</p>}
 
       {reservations.length === 0 ? (
         <div className="empty-state">
@@ -38,7 +64,6 @@ function Reservations() {
                   </h2>
 
                   <p>Nuomos pradžia: {reservation.startDate}</p>
-
                   <p>Nuomos pabaiga: {reservation.endDate}</p>
 
                   <p>
@@ -56,12 +81,24 @@ function Reservations() {
                   </span>
                 </div>
 
-                <Link
-                  className="reservation-details-button"
-                  to={`/reservations/${reservation.id}`}
-                >
-                  Peržiūrėti
-                </Link>
+                <div className="reservation-actions">
+                  <Link
+                    className="reservation-details-button"
+                    to={`/reservations/${reservation.id}`}
+                  >
+                    Peržiūrėti
+                  </Link>
+
+                  {reservation.status !== "Atšaukta" && (
+                    <button
+                      type="button"
+                      className="reservation-cancel-button"
+                      onClick={() => handleCancel(reservation.id)}
+                    >
+                      Atšaukti
+                    </button>
+                  )}
+                </div>
               </article>
             );
           })}

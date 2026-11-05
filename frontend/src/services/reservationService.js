@@ -142,3 +142,29 @@ export function createReservation({
 
   return newReservation;
 }
+
+export function cancelReservation(id) {
+  const reservations = getAllReservations();
+
+  const reservation = reservations.find(
+    (item) => item.id === Number(id)
+  );
+
+  if (!reservation) {
+    throw new Error("Rezervacija nerasta.");
+  }
+
+  if (reservation.status === "Atšaukta") {
+    throw new Error("Ši rezervacija jau atšaukta.");
+  }
+
+  const updatedReservations = reservations.map((item) =>
+    item.id === Number(id)
+      ? { ...item, status: "Atšaukta" }
+      : item
+  );
+
+  saveReservations(updatedReservations);
+
+  return updatedReservations;
+}

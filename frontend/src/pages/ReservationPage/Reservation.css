@@ -154,3 +154,28 @@
     text-align: center;
   }
 }
+.reservation-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reservation-cancel-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #dc4545;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reservation-cancel-button:hover {
+  background-color: #b83232;
+}
+
+.error-message {
+  color: #dc4545;
+  margin: 12px 0;
+}
