@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getReservationsByUser } from "../../services/reservationService";
 import { initialCars } from "../../data/mockReservations";
+import "./Reservation.css";
 
 function Reservations() {
   // Kol dar neturime prisijungimo funkcionalumo,

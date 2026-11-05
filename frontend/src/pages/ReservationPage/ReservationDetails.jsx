@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { getReservationById } from "../../services/reservationService";
 import { initialCars } from "../../data/mockReservations";
+import "./Reservation.css";
 
 function ReservationDetails() {
   const { id } = useParams();
@@ -11,7 +12,9 @@ function ReservationDetails() {
     return (
       <main className="page-container">
         <h1>Rezervacija nerasta</h1>
-        <Link to="/reservations">Grįžti į rezervacijas</Link>
+        <Link to="/reservations" className="reservation-back-link">
+          Grįžti į rezervacijas
+        </Link>
       </main>
     );
   }

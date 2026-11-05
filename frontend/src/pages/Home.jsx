@@ -3,19 +3,6 @@ import { Link } from "react-router-dom";
 function Home() {
   return (
     <main className="home-page">
-      <header className="home-header">
-        <Link to="/" className="home-logo">
-          RiedaLT
-        </Link>
-
-        <nav>
-          <Link to="/">Pradžia</Link>
-          <Link to="/cars">Automobiliai</Link>
-          <Link to="/reservations">Mano rezervacijos</Link>
-          <Link to="/login">Prisijungti</Link>
-        </nav>
-      </header>
-
       <section className="home-hero">
         <div className="home-hero-content">
           <p className="home-subtitle">AUTOMOBILIŲ NUOMA PAPRASTAI</p>
