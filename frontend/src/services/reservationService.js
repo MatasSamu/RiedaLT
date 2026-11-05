@@ -1,5 +1,5 @@
 
-import { initialReservations } from "../data/mockData";
+import { initialReservations } from "../data/mockReservations";
 
 const STORAGE_KEY = "riedalt_reservations";
 
