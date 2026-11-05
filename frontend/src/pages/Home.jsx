@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { initialCars } from "../data/mockReservations";
 
 function Home() {
   return (
@@ -21,6 +22,46 @@ function Home() {
           <Link to="/cars" className="home-button">
             Ieškoti automobilio
           </Link>
+        </div>
+      </section>
+
+      <section className="home-cars">
+        <div className="home-cars-heading">
+          <div>
+            <p className="home-subtitle">MŪSŲ PASIŪLYMAS</p>
+            <h2>Populiariausi automobiliai</h2>
+          </div>
+        </div>
+
+        <div className="car-list">
+          {initialCars.map((car) => (
+            <article className="car-card" key={car.id}>
+              <div className="car-card-image">
+                <span>{car.brand}</span>
+              </div>
+
+              <div className="car-card-info">
+                <h3>
+                  {car.brand} {car.model}
+                </h3>
+
+                <p>Pagaminimo metai: {car.year}</p>
+
+                <div className="car-card-bottom">
+                  <p>
+                    <strong>{car.pricePerDay} €</strong> / diena
+                  </p>
+
+                  <Link
+                    to={`/reservations/new?carId=${car.id}`}
+                    className="car-reserve-button"
+                  >
+                    Rezervuoti
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 

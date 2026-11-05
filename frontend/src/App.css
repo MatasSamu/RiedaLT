@@ -141,3 +141,107 @@
     grid-template-columns: 1fr;
   }
 }
+/* Automobilių sąrašas */
+.home-cars {
+  padding: 55px 8%;
+}
+
+.home-cars-heading {
+  margin-bottom: 30px;
+}
+
+.home-cars-heading h2 {
+  color: #1e352b;
+  font-size: 30px;
+  margin: 10px 0;
+}
+
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.car-card {
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e3e8e3;
+  border-radius: 10px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(30, 53, 43, 0.09);
+}
+
+.car-card-image {
+  height: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e9eee9;
+  color: #1e352b;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.car-card-info {
+  padding: 20px;
+}
+
+.car-card-info h3 {
+  color: #1e352b;
+  font-size: 19px;
+  margin-bottom: 10px;
+}
+
+.car-card-info > p {
+  color: #69756e;
+  font-size: 14px;
+}
+
+.car-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.car-card-bottom p {
+  color: #69756e;
+  font-size: 13px;
+}
+
+.car-card-bottom strong {
+  color: #1e352b;
+  font-size: 21px;
+}
+
+.car-reserve-button {
+  padding: 10px 14px;
+  background: #1e352b;
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.car-reserve-button:hover {
+  background: #e16b3d;
+}
+
+@media (max-width: 850px) {
+  .car-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .car-list {
+    grid-template-columns: 1fr;
+  }
+}
