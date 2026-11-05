@@ -43,6 +43,16 @@ function saveReservations(reservations) {
   );
 }
 
+function getTodayDate() {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 export function calculateRentalPrice(carId, startDate, endDate) {
   const car = initialCars.find(
     (item) => item.id === Number(carId)
@@ -52,15 +62,28 @@ export function calculateRentalPrice(carId, startDate, endDate) {
     throw new Error("Automobilis nerastas.");
   }
 
+  if (!startDate || !endDate) {
+    throw new Error("Pasirinkite abi nuomos datas.");
+  }
+
   const start = new Date(`${startDate}T00:00:00Z`);
   const end = new Date(`${endDate}T00:00:00Z`);
 
   if (
     Number.isNaN(start.getTime()) ||
     Number.isNaN(end.getTime()) ||
-    end <= start
+    start.toISOString().slice(0, 10) !== startDate ||
+    end.toISOString().slice(0, 10) !== endDate
   ) {
     throw new Error("Neteisingai pasirinktos nuomos datos.");
+  }
+
+  if (startDate < getTodayDate()) {
+    throw new Error("Negalima rezervuoti automobilio praeities data.");
+  }
+
+  if (endDate <= startDate) {
+    throw new Error("Nuomos pabaiga turi būti vėlesnė už pradžią.");
   }
 
   const rentalDays = (end - start) / (1000 * 60 * 60 * 24);

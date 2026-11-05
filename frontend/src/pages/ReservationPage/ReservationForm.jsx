@@ -1,15 +1,20 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { initialCars } from "../../data/mockReservations";
 import { useState } from "react";
+import { createReservation } from "../../services/reservationService";
 
 function ReservationForm() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const carId = Number(searchParams.get("carId"));
-
   const car = initialCars.find((item) => item.id === carId);
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [error, setError] = useState("");
+
+  const today = new Date().toLocaleDateString("en-CA");
 
   const rentalDays =
     startDate && endDate && endDate > startDate
@@ -18,7 +23,25 @@ function ReservationForm() {
         (1000 * 60 * 60 * 24)
       : 0;
 
-  const totalPrice = rentalDays > 0 ? rentalDays * car.pricePerDay : 0;
+  const totalPrice = rentalDays > 0 && car ? rentalDays * car.pricePerDay : 0;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+
+    try {
+      createReservation({
+        userId: 1,
+        carId,
+        startDate,
+        endDate,
+      });
+
+      navigate("/reservations");
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   if (!car) {
     return (
@@ -28,7 +51,6 @@ function ReservationForm() {
       </main>
     );
   }
-  const today = new Date().toLocaleDateString("en-CA");
 
   return (
     <main className="page-container">
@@ -42,7 +64,8 @@ function ReservationForm() {
         <p>Pagaminimo metai: {car.year}</p>
         <p>Kaina už parą: {car.pricePerDay} €</p>
       </div>
-      <div className="reservation-form">
+
+      <form onSubmit={handleSubmit} className="reservation-form">
         <h2>Pasirinkite nuomos laikotarpį</h2>
 
         <div className="form-group">
@@ -51,6 +74,7 @@ function ReservationForm() {
             type="date"
             id="startDate"
             min={today}
+            required
             value={startDate}
             onChange={(e) => {
               setStartDate(e.target.value);
@@ -67,7 +91,8 @@ function ReservationForm() {
           <input
             type="date"
             id="endDate"
-            min={startDate || today}
+            min={startDate ? startDate : today}
+            required
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
@@ -79,7 +104,13 @@ function ReservationForm() {
             <h3>Bendra kaina: {totalPrice} €</h3>
           </div>
         )}
-      </div>
+
+        {error && <p className="error-message">{error}</p>}
+
+        <button type="submit" disabled={rentalDays <= 0}>
+          Patvirtinti rezervaciją
+        </button>
+      </form>
     </main>
   );
 }
