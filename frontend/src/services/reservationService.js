@@ -168,3 +168,58 @@ export function cancelReservation(id) {
 
   return updatedReservations;
 }
+
+export function updateReservation(id, { startDate, endDate }) {
+  const reservations = getAllReservations();
+
+  const reservation = reservations.find(
+    (item) => item.id === Number(id)
+  );
+
+  if (!reservation) {
+    throw new Error("Rezervacija nerasta.");
+  }
+
+  if (reservation.status === "Atšaukta") {
+    throw new Error("Atšauktos rezervacijos redaguoti negalima.");
+  }
+
+  // Patikriname datas ir perskaičiuojame kainą
+  const totalPrice = calculateRentalPrice(
+    reservation.carId,
+    startDate,
+    endDate
+  );
+
+  // Tikriname, ar tuo laikotarpiu automobilis nėra rezervuotas
+  const hasConflict = reservations.some((item) => {
+    return (
+      item.id !== Number(id) &&
+      item.carId === reservation.carId &&
+      item.status !== "Atšaukta" &&
+      startDate < item.endDate &&
+      endDate > item.startDate
+    );
+  });
+
+  if (hasConflict) {
+    throw new Error(
+      "Šis automobilis pasirinktomis datomis jau rezervuotas."
+    );
+  }
+
+  const updatedReservation = {
+    ...reservation,
+    startDate,
+    endDate,
+    totalPrice,
+  };
+
+  const updatedReservations = reservations.map((item) =>
+    item.id === Number(id) ? updatedReservation : item
+  );
+
+  saveReservations(updatedReservations);
+
+  return updatedReservation;
+}

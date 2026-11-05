@@ -90,6 +90,15 @@ function Reservations() {
                   </Link>
 
                   {reservation.status !== "Atšaukta" && (
+                    <Link
+                      className="reservation-details-button"
+                      to={`/reservations/${reservation.id}/edit`}
+                    >
+                      Redaguoti
+                    </Link>
+                  )}
+
+                  {reservation.status !== "Atšaukta" && (
                     <button
                       type="button"
                       className="reservation-cancel-button"
