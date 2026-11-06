@@ -1,5 +1,5 @@
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
-import { initialCars } from "../../data/mockReservations";
+import { getCars } from "../../services/carService";
 import { useState } from "react";
 import { createReservation } from "../../services/reservationService";
 
@@ -8,7 +8,7 @@ function ReservationForm() {
   const navigate = useNavigate();
 
   const carId = Number(searchParams.get("carId"));
-  const car = initialCars.find((item) => item.id === carId);
+  const car = getCars().find((item) => item.id === carId);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");

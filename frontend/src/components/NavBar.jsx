@@ -16,6 +16,12 @@ function Navbar() {
         <NavLink to="/cars">Automobiliai</NavLink>
 
         <NavLink to="/reservations">Mano rezervacijos</NavLink>
+
+        <span className="navbar-divider" />
+
+        <NavLink to="/employee/cars">Darbuotojas</NavLink>
+
+        <NavLink to="/admin/discount-codes">Administratorius</NavLink>
       </nav>
 
       <div className="navbar-actions">

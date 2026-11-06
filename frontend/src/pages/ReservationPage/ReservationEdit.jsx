@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { initialCars } from "../../data/mockReservations";
+import { getCars } from "../../services/carService";
 import {
   getReservationById,
   updateReservation,
@@ -40,7 +40,7 @@ function ReservationEdit() {
     );
   }
 
-  const car = initialCars.find((item) => item.id === reservation.carId);
+  const car = getCars().find((item) => item.id === reservation.carId);
 
   const rentalDays =
     startDate && endDate && endDate > startDate

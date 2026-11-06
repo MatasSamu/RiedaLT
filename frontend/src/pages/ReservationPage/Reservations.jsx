@@ -4,7 +4,7 @@ import {
   getReservationsByUser,
   cancelReservation,
 } from "../../services/reservationService";
-import { initialCars } from "../../data/mockReservations";
+import { getCars } from "../../services/carService";
 import "./Reservation.css";
 
 function Reservations() {
@@ -36,11 +36,19 @@ function Reservations() {
 
   return (
     <main className="page-container">
-      <h1>Mano rezervacijos</h1>
-
-      <p className="page-description">
-        Čia galite peržiūrėti savo automobilių rezervacijas.
-      </p>
+      <div className="reservation-page-heading">
+        <div>
+          <p className="home-subtitle">TAVO KELIONĖS</p>
+          <h1>Mano rezervacijos</h1>
+          <p className="page-description">
+            Čia galite peržiūrėti savo automobilių rezervacijas.
+          </p>
+        </div>
+        <div className="reservation-count">
+          <strong>{reservations.length}</strong>
+          <span>rezervacija(-os)</span>
+        </div>
+      </div>
 
       {error && <p className="error-message">{error}</p>}
 
@@ -52,23 +60,42 @@ function Reservations() {
       ) : (
         <div className="reservation-list">
           {reservations.map((reservation) => {
-            const car = initialCars.find(
+            const car = getCars().find(
               (item) => item.id === reservation.carId,
             );
 
             return (
               <article className="reservation-card" key={reservation.id}>
+                <div className="reservation-car-visual">
+                  {car?.image ? (
+                    <img
+                      src={car.image}
+                      alt={`${car.brand} ${car.model}`}
+                    />
+                  ) : (
+                    <span>{car?.brand || "Automobilis"}</span>
+                  )}
+                  <span className="reservation-number">
+                    #{reservation.id}
+                  </span>
+                </div>
+
                 <div className="reservation-info">
                   <h2>
                     {car?.brand} {car?.model}
                   </h2>
 
-                  <p>Nuomos pradžia: {reservation.startDate}</p>
-                  <p>Nuomos pabaiga: {reservation.endDate}</p>
-
-                  <p>
-                    Bendra kaina: <strong>{reservation.totalPrice} €</strong>
-                  </p>
+                  <div className="reservation-dates">
+                    <div>
+                      <span>NUOMOS PRADŽIA</span>
+                      <strong>{reservation.startDate}</strong>
+                    </div>
+                    <span className="date-arrow">→</span>
+                    <div>
+                      <span>NUOMOS PABAIGA</span>
+                      <strong>{reservation.endDate}</strong>
+                    </div>
+                  </div>
 
                   <span
                     className={`reservation-status ${
@@ -82,6 +109,10 @@ function Reservations() {
                 </div>
 
                 <div className="reservation-actions">
+                  <div className="reservation-price">
+                    <span>Bendra kaina</span>
+                    <strong>{reservation.totalPrice} €</strong>
+                  </div>
                   <Link
                     className="reservation-details-button"
                     to={`/reservations/${reservation.id}`}

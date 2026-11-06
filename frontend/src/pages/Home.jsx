@@ -1,43 +1,65 @@
 import { Link } from "react-router-dom";
-import { initialCars } from "../data/mockReservations";
+import { getCars } from "../services/carService";
+import { useState } from "react";
 
 function Home() {
+  const [cars] = useState(getCars);
+  const featuredCars = cars.slice(0, 3);
+
   return (
     <main className="home-page">
       <section className="home-hero">
         <div className="home-hero-content">
-          <p className="home-subtitle">AUTOMOBILIŲ NUOMA PAPRASTAI</p>
+          <span className="hero-eyebrow">RIEDALT AUTOMOBILIŲ NUOMA</span>
 
           <h1>
-            Tavo kelionė
+            Kelionė prasideda
             <br />
-            prasideda čia.
+            nuo tinkamo <em>automobilio.</em>
           </h1>
 
           <p>
-            Atrask tinkamą automobilį savo kelionei. Patogus rezervavimas ir
-            paprasta nuomos patirtis.
+            Atraskite patogų ir patikimą automobilį savo kelionei. Rezervuokite
+            internetu greitai, aiškiai ir be nereikalingų žingsnių.
           </p>
 
-          <Link to="/cars" className="home-button">
-            Ieškoti automobilio
-          </Link>
+          <div className="hero-actions">
+            <Link to="/cars" className="home-button">
+              Peržiūrėti automobilius <span>→</span>
+            </Link>
+            <Link to="/reservations" className="hero-secondary-link">
+              Mano rezervacijos
+            </Link>
+          </div>
+        </div>
+
+        <div className="home-hero-visual">
+          <div className="hero-image-frame">
+            <img src={featuredCars[0]?.image} alt="BMW 320d automobilis" />
+          </div>
         </div>
       </section>
 
       <section className="home-cars">
         <div className="home-cars-heading">
           <div>
-            <p className="home-subtitle">MŪSŲ PASIŪLYMAS</p>
+            <p className="home-subtitle">ATRASKITE SAVO KITĄ KELIONĘ</p>
             <h2>Populiariausi automobiliai</h2>
           </div>
+          <Link to="/cars" className="view-all-link">
+            Visi automobiliai <span>→</span>
+          </Link>
         </div>
 
         <div className="car-list">
-          {initialCars.map((car) => (
+          {featuredCars.map((car) => (
             <article className="car-card" key={car.id}>
               <div className="car-card-image">
-                <span>{car.brand}</span>
+                {car.image ? (
+                  <img src={car.image} alt={`${car.brand} ${car.model}`} />
+                ) : (
+                  <span>{car.brand}</span>
+                )}
               </div>
 
               <div className="car-card-info">
@@ -65,8 +87,20 @@ function Home() {
         </div>
       </section>
 
+      <section className="home-stats">
+        <div>
+          <strong>{cars.length}+</strong>
+          <span>Automobilių pasirinkimas</span>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <span>Paprastas rezervavimas</span>
+        </div>
+      </section>
+
       <section className="home-features">
-        <h2>RiedaLT privalumai</h2>
+        <p className="home-subtitle">KODĖL RIEDALT?</p>
+        <h2>Viskas, ko reikia patogiai kelionei</h2>
 
         <div className="feature-list">
           <article className="feature-card">
