@@ -1,5 +1,6 @@
 
-import { initialReservations, initialCars  } from "../data/mockReservations";
+import { initialReservations } from "../data/mockReservations";
+import { getCars } from "./carService";
 
 const STORAGE_KEY = "riedalt_reservations";
 
@@ -54,7 +55,7 @@ function getTodayDate() {
 }
 
 export function calculateRentalPrice(carId, startDate, endDate) {
-  const car = initialCars.find(
+  const car = getCars().find(
     (item) => item.id === Number(carId)
   );
 
@@ -99,7 +100,7 @@ export function createReservation({
 }) {
   const reservations = getAllReservations();
 
-  const car = initialCars.find(
+  const car = getCars().find(
     (item) => item.id === Number(carId)
   );
 

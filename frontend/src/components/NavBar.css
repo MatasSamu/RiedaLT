@@ -25,7 +25,13 @@
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 20px;
+}
+
+.navbar-divider {
+  width: 1px;
+  height: 22px;
+  background: #dce4dd;
 }
 
 .navbar-links a {

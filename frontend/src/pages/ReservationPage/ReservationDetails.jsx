@@ -4,7 +4,7 @@ import {
   getReservationById,
   cancelReservation,
 } from "../../services/reservationService";
-import { initialCars } from "../../data/mockReservations";
+import { getCars } from "../../services/carService";
 import "./Reservation.css";
 
 function ReservationDetails() {
@@ -25,7 +25,7 @@ function ReservationDetails() {
     );
   }
 
-  const car = initialCars.find((item) => item.id === reservation.carId);
+  const car = getCars().find((item) => item.id === reservation.carId);
 
   const start = new Date(`${reservation.startDate}T00:00:00Z`);
   const end = new Date(`${reservation.endDate}T00:00:00Z`);
