@@ -225,6 +225,62 @@
   position: relative;
 }
 
+.page-container > .page-heading,
+.page-container > .reservation-page-heading,
+.page-container > h1:first-child {
+  margin: 0 0 38px;
+  padding: 34px 40px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(80, 128, 101, 0.42), transparent 34%),
+    #173326;
+  color: #ffffff;
+  box-shadow: 0 18px 35px rgba(23, 51, 38, 0.14);
+}
+
+.page-container > .page-heading h1,
+.page-container > .reservation-page-heading h1,
+.page-container > h1:first-child {
+  color: #ffffff;
+}
+
+.page-container > .page-heading .page-description,
+.page-container > .reservation-page-heading .page-description {
+  color: #c8d8cf;
+  margin-bottom: 0;
+}
+
+.page-container > .page-heading .home-subtitle,
+.page-container > .reservation-page-heading .home-subtitle {
+  color: #f29a70;
+}
+
+.page-container > .page-heading::before {
+  display: none;
+}
+
+.page-container > .page-heading .role-badge {
+  background: rgba(255, 255, 255, 0.14);
+  color: #d8e5dd;
+}
+
+.page-container > .reservation-page-heading {
+  margin-bottom: 38px;
+  padding: 34px 40px;
+  border-left: 0;
+}
+
+.page-container > .reservation-page-heading .reservation-count {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  color: #d8e5dd;
+  box-shadow: none;
+}
+
+.page-container > .reservation-page-heading .reservation-count strong {
+  color: #f29a70;
+}
+
 .page-container::before {
   position: fixed;
   top: 75px;
@@ -242,18 +298,11 @@
 
 .page-container > .page-heading {
   position: relative;
-  padding: 8px 0 8px 22px;
+  align-items: center;
 }
 
 .page-container > .page-heading::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 4px;
-  border-radius: 4px;
-  background: #ec784b;
-  content: "";
+  display: none;
 }
 
 .page-description {
@@ -326,6 +375,18 @@
 
   .feature-list {
     grid-template-columns: 1fr;
+  }
+
+  .page-container > .page-heading,
+  .page-container > .reservation-page-heading,
+  .page-container > h1:first-child {
+    padding: 28px 24px;
+  }
+
+  .page-container > .page-heading,
+  .page-container > .reservation-page-heading {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 /* Automobilių sąrašas */
