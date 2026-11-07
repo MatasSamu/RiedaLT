@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { getCars } from "../services/carService";
-import { getFuelConsumptionUnit } from "../services/carComparison";
+import { getCars } from "../../services/carService";
+import { getFuelConsumptionUnit } from "../../services/carComparison";
 
 function formatValue(value, unit) {
   if (value === undefined || value === null || value === "") {

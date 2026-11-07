@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { getCars } from "../services/carService";
+import { getCars } from "../../services/carService";
 import {
   calculateComparison,
   comparisonCriteria,
   getFuelConsumptionUnit,
   getCriterionOptions,
   hasCompleteCriterionData,
-} from "../services/carComparison";
+} from "../../services/carComparison";
 
 const initialCriteriaState = Object.fromEntries(
   comparisonCriteria.map((criterion) => [

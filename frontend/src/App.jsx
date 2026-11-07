@@ -8,8 +8,8 @@ import ReservationDetails from "./pages/ReservationPage/ReservationDetails";
 import ReservationForm from "./pages/ReservationPage/ReservationForm";
 import ReservationEdit from "./pages/ReservationPage/ReservationEdit";
 import Registration from "./pages/Registration";
-import CarDetails from "./pages/CarDetails";
-import CarComparison from "./pages/CarComparison";
+import CarDetails from "./pages/CarSearchPage/CarDetails";
+import CarComparison from "./pages/CarSearchPage/CarComparison";
 import Navbar from "./components/NavBar";
 import "./App.css";
 
