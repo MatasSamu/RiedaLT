@@ -9,6 +9,7 @@ function Navbar() {
   const user = getCurrentUser();
 
   const isAdmin = user?.role === "admin";
+  const isEmployee = user?.role === "employee";
   const isCustomer = user?.role === "customer";
 
   function handleLogout() {
@@ -33,11 +34,13 @@ function Navbar() {
 
         <NavLink to="/reviews">Atsiliepimai</NavLink>
 
-        {isAdmin && (
+        {(isAdmin || isEmployee) && (
           <>
             <span className="navbar-divider" />
-            <NavLink to="/employee/cars">Darbuotojas</NavLink>
-            <NavLink to="/admin/discount-codes">Administratorius</NavLink>
+            {isEmployee && <NavLink to="/employee/cars">Darbuotojas</NavLink>}
+            {isAdmin && (
+              <NavLink to="/admin/discount-codes">Administratorius</NavLink>
+            )}
           </>
         )}
       </nav>
@@ -46,7 +49,13 @@ function Navbar() {
         {user ? (
           <>
             <span className="navbar-user">
-              {user.firstName} ({isAdmin ? "Administratorius" : "Klientas"})
+              {user.firstName} (
+              {isAdmin
+                ? "Administratorius"
+                : isEmployee
+                  ? "Darbuotojas"
+                  : "Klientas"}
+              )
             </span>
 
             <button

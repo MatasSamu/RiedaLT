@@ -14,6 +14,15 @@ const demoAdmin = {
   password: "Admin123",
 };
 
+const demoEmployee = {
+  id: -1,
+  firstName: "RiedaLT",
+  lastName: "Darbuotojas",
+  email: "darbuotojas@riedalt.lt",
+  role: "employee",
+  password: "Darbuotojas123",
+};
+
 function getUsers() {
   const storedUsers = localStorage.getItem(USERS_KEY);
   return storedUsers ? JSON.parse(storedUsers) : initialUsers;
@@ -48,6 +57,26 @@ export function loginUser(email, password) {
     );
 
     return adminProfile;
+  }
+
+  if (
+    email.trim().toLowerCase() === demoEmployee.email &&
+    password === demoEmployee.password
+  ) {
+    const employeeProfile = {
+      id: demoEmployee.id,
+      firstName: demoEmployee.firstName,
+      lastName: demoEmployee.lastName,
+      email: demoEmployee.email,
+      role: demoEmployee.role,
+    };
+
+    localStorage.setItem(
+      CURRENT_USER_KEY,
+      JSON.stringify(employeeProfile)
+    );
+
+    return employeeProfile;
   }
 
   let users;
