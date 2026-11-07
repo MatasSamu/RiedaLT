@@ -1,7 +1,21 @@
-import { NavLink, Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { getCurrentUser, logoutUser } from "../services/authService";
 import "./Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  // Perskaitome prisijungusį naudotoją
+  const user = getCurrentUser();
+
+  const isAdmin = user?.role === "admin";
+  const isCustomer = user?.role === "customer";
+
+  function handleLogout() {
+    logoutUser();
+    navigate("/");
+  }
+
   return (
     <header className="navbar">
       <Link to="/" className="navbar-logo">
@@ -15,23 +29,43 @@ function Navbar() {
 
         <NavLink to="/cars">Automobiliai</NavLink>
 
-        <NavLink to="/reservations">Mano rezervacijos</NavLink>
+        {isCustomer && <NavLink to="/reservations">Mano rezervacijos</NavLink>}
 
-        <span className="navbar-divider" />
-
-        <NavLink to="/employee/cars">Darbuotojas</NavLink>
-
-        <NavLink to="/admin/discount-codes">Administratorius</NavLink>
+        {isAdmin && (
+          <>
+            <span className="navbar-divider" />
+            <NavLink to="/employee/cars">Darbuotojas</NavLink>
+            <NavLink to="/admin/discount-codes">Administratorius</NavLink>
+          </>
+        )}
       </nav>
 
       <div className="navbar-actions">
-        <Link to="/login" className="navbar-login">
-          Prisijungti
-        </Link>
+        {user ? (
+          <>
+            <span className="navbar-user">
+              {user.firstName} ({isAdmin ? "Administratorius" : "Klientas"})
+            </span>
 
-        <Link to="/register" className="navbar-register">
-          Registruotis
-        </Link>
+            <button
+              type="button"
+              className="navbar-login"
+              onClick={handleLogout}
+            >
+              Atsijungti
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="navbar-login">
+              Prisijungti
+            </Link>
+
+            <Link to="/register" className="navbar-register">
+              Registruotis
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
