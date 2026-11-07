@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { loginUser } from "../services/authService";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectPath = location.state?.from
+    ? `${location.state.from.pathname}${location.state.from.search || ""}`
+    : "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +20,7 @@ function LoginPage() {
 
     try {
       loginUser(email, password);
-      navigate("/");
+      navigate(redirectPath, { replace: true });
     } catch (err) {
       setError(err.message);
     }

@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { getCurrentUser } from "./services/authService";
 import Home from "./pages/Home";
 import Cars from "./pages/Cars";
 import EmployeeCars from "./pages/EmployeeCars";
@@ -14,6 +21,17 @@ import Navbar from "./components/NavBar";
 import LoginPage from "./pages/LoginPage";
 import "./App.css";
 
+function RequireAuth({ children }) {
+  const location = useLocation();
+  const user = getCurrentUser();
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,9 +43,30 @@ function App() {
         <Route path="/cars/compare" element={<CarComparison />} />
         <Route path="/cars/:id" element={<CarDetails />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/reservations" element={<Reservations />} />
-        <Route path="/reservations/:id" element={<ReservationDetails />} />
-        <Route path="/reservations/new" element={<ReservationForm />} />
+        <Route
+          path="/reservations"
+          element={
+            <RequireAuth>
+              <Reservations />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/reservations/:id"
+          element={
+            <RequireAuth>
+              <ReservationDetails />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/reservations/new"
+          element={
+            <RequireAuth>
+              <ReservationForm />
+            </RequireAuth>
+          }
+        />
         <Route path="/reservations/:id/edit" element={<ReservationEdit />} />
         <Route path="/employee/cars" element={<EmployeeCars />} />
         <Route path="/admin/discount-codes" element={<AdminDiscountCodes />} />
