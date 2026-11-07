@@ -19,6 +19,7 @@ import CarDetails from "./pages/CarSearchPage/CarDetails";
 import CarComparison from "./pages/CarSearchPage/CarComparison";
 import Navbar from "./components/NavBar";
 import LoginPage from "./pages/LoginPage";
+import Reviews from "./pages/ReviewsPage/Reviews";
 import "./App.css";
 
 function RequireAuth({ children }) {
@@ -71,6 +72,7 @@ function App() {
         <Route path="/employee/cars" element={<EmployeeCars />} />
         <Route path="/admin/discount-codes" element={<AdminDiscountCodes />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/reviews" element={<Reviews />} />
       </Routes>
     </BrowserRouter>
   );

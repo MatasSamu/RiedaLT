@@ -31,6 +31,8 @@ function Navbar() {
 
         {isCustomer && <NavLink to="/reservations">Mano rezervacijos</NavLink>}
 
+        <NavLink to="/reviews">Atsiliepimai</NavLink>
+
         {isAdmin && (
           <>
             <span className="navbar-divider" />
