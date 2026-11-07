@@ -7,6 +7,9 @@ import Reservations from "./pages/ReservationPage/Reservations";
 import ReservationDetails from "./pages/ReservationPage/ReservationDetails";
 import ReservationForm from "./pages/ReservationPage/ReservationForm";
 import ReservationEdit from "./pages/ReservationPage/ReservationEdit";
+import Registration from "./pages/Registration";
+import CarDetails from "./pages/CarDetails";
+import CarComparison from "./pages/CarComparison";
 import Navbar from "./components/NavBar";
 import "./App.css";
 
@@ -18,6 +21,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cars" element={<Cars />} />
+        <Route path="/cars/compare" element={<CarComparison />} />
+        <Route path="/cars/:id" element={<CarDetails />} />
+        <Route path="/register" element={<Registration />} />
         <Route path="/reservations" element={<Reservations />} />
         <Route path="/reservations/:id" element={<ReservationDetails />} />
         <Route path="/reservations/new" element={<ReservationForm />} />

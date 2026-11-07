@@ -799,3 +799,614 @@
     justify-content: space-between;
   }
 }
+
+.management-card select,
+.registration-form input,
+.registration-form select,
+.car-filter-grid input,
+.car-filter-grid select,
+.criterion-option select,
+.criterion-option input {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #cbd9cf;
+  border-radius: 8px;
+  background: #fbfdfb;
+  color: #17231d;
+}
+
+.management-card select:focus,
+.registration-form input:focus,
+.car-filter-grid input:focus,
+.car-filter-grid select:focus,
+.criterion-option select:focus,
+.criterion-option input:focus {
+  outline: 2px solid rgba(225, 107, 61, 0.25);
+  border-color: #e16b3d;
+}
+
+.primary-button:disabled,
+.comparison-toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.car-filter-panel,
+.comparison-panel,
+.car-specification-section,
+.registration-card {
+  padding: 28px;
+  border: 1px solid #dfe9e2;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(30, 53, 43, 0.06);
+}
+
+.car-filter-panel {
+  margin-bottom: 22px;
+}
+
+.filter-panel-heading,
+.comparison-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-panel-heading h2,
+.comparison-panel-heading h2 {
+  margin-bottom: 6px;
+  font-size: 21px;
+}
+
+.filter-panel-heading p,
+.comparison-panel-heading p {
+  margin-bottom: 0;
+  color: #69756e;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.car-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.car-filter-grid label,
+.registration-form label,
+.criterion-preference,
+.criterion-weight {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #405047;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.car-filter-grid .filter-search {
+  grid-column: span 2;
+}
+
+.car-filter-grid input,
+.car-filter-grid select {
+  width: 100%;
+}
+
+.comparison-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 15px 18px;
+  border: 1px solid #dfe9e2;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.comparison-toolbar p {
+  margin: 0;
+  color: #69756e;
+  font-size: 14px;
+}
+
+.comparison-toolbar strong {
+  color: #173326;
+}
+
+.car-card-info h2 {
+  margin-bottom: 10px;
+  font-size: 19px;
+}
+
+.car-card-info h2 a:hover,
+.comparison-table th a:hover {
+  color: #e16b3d;
+}
+
+.car-card-specs {
+  color: #69756e;
+  font-size: 12px;
+}
+
+.compare-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: #405047;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.compare-select input,
+.comparison-car-option input,
+.criterion-select input {
+  width: 17px;
+  height: 17px;
+  accent-color: #e16b3d;
+}
+
+.home-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.car-details-link {
+  color: #39805a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.car-details-link:hover {
+  color: #e16b3d;
+}
+
+.registration-page {
+  display: grid;
+  min-height: calc(100vh - 75px);
+  place-items: center;
+  padding: 48px 20px;
+  background:
+    radial-gradient(circle at 85% 10%, #e8f2ed 0, transparent 30%),
+    #f4f7f5;
+}
+
+.registration-card {
+  width: min(100%, 590px);
+  padding: 38px;
+}
+
+.registration-card h1 {
+  margin-bottom: 10px;
+  font-size: clamp(30px, 4vw, 40px);
+}
+
+.registration-intro,
+.registration-success p,
+.registration-notice {
+  color: #69756e;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 24px;
+}
+
+.registration-form input {
+  width: 100%;
+}
+
+.registration-form .form-row {
+  margin-bottom: 0;
+}
+
+.registration-form .error-message {
+  margin: 0;
+}
+
+.registration-notice {
+  margin: 18px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid #edf1ed;
+  font-size: 12px;
+}
+
+.registration-success .primary-button {
+  margin-top: 8px;
+}
+
+.car-details-page > .reservation-back-link {
+  margin: 0 0 22px;
+}
+
+.car-details-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  overflow: hidden;
+  margin-bottom: 32px;
+  border: 1px solid #dfe9e2;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 16px 38px rgba(30, 53, 43, 0.08);
+}
+
+.car-details-image {
+  min-height: 350px;
+  display: grid;
+  place-items: center;
+  background: #e7efe9;
+  color: #39805a;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.car-details-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  object-fit: cover;
+}
+
+.car-details-summary {
+  align-self: center;
+  padding: 34px;
+}
+
+.car-details-summary h1 {
+  margin-bottom: 12px;
+  font-size: clamp(30px, 4vw, 42px);
+}
+
+.car-details-summary > p:not(.home-subtitle) {
+  color: #69756e;
+}
+
+.car-details-summary .car-details-price {
+  margin: 24px 0;
+  color: #173326 !important;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.car-specification-section {
+  padding: 32px;
+}
+
+.car-specification-section h2 {
+  margin-bottom: 24px;
+}
+
+.car-specification-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid #e6ece7;
+  border-radius: 10px;
+  background: #e6ece7;
+}
+
+.car-specification-grid div {
+  padding: 17px;
+  background: #ffffff;
+}
+
+.car-specification-grid dt {
+  margin-bottom: 7px;
+  color: #718078;
+  font-size: 12px;
+}
+
+.car-specification-grid dd {
+  margin: 0;
+  color: #173326;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.comparison-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 22px;
+  padding: 16px;
+  border: 1px solid #dfe9e2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.comparison-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #89918c;
+  font-size: 13px;
+}
+
+.comparison-step span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf1ed;
+  font-weight: 800;
+}
+
+.comparison-step.active {
+  color: #173326;
+}
+
+.comparison-step.active span {
+  background: #173326;
+  color: white;
+}
+
+.comparison-panel {
+  padding: 30px;
+}
+
+.comparison-panel-heading > span {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #e5f4e9;
+  color: #28734b;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.comparison-car-options,
+.criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comparison-car-option,
+.criterion-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid #e6ece7;
+  border-radius: 9px;
+  background: #fbfdfb;
+}
+
+.comparison-car-option {
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+.comparison-car-option span,
+.criterion-select span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.comparison-car-option strong,
+.criterion-select strong {
+  color: #173326;
+  font-size: 14px;
+}
+
+.comparison-car-option small,
+.criterion-select small {
+  color: #718078;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.comparison-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.comparison-message {
+  margin: 16px 0 0;
+  color: #b3261e;
+  font-size: 13px;
+}
+
+.criterion-option.unavailable {
+  background: #f7f8f7;
+}
+
+.criterion-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.criterion-select input:disabled {
+  cursor: not-allowed;
+}
+
+.criterion-preference {
+  width: 190px;
+}
+
+.criterion-weight {
+  width: 90px;
+}
+
+.criterion-weight input {
+  width: 100%;
+}
+
+.recommendation-card {
+  margin: 6px 0 24px;
+  padding: 24px;
+  border: 1px solid #b9d1c0;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #edf7f0, #ffffff);
+}
+
+.recommendation-card > span {
+  color: #39805a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.recommendation-card h3 {
+  margin: 9px 0 5px;
+  font-size: 22px;
+}
+
+.recommendation-card p {
+  margin-bottom: 8px;
+  color: #173326;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.recommendation-card small {
+  color: #69756e;
+}
+
+.comparison-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e6ece7;
+  color: #405047;
+  font-size: 13px;
+}
+
+.comparison-table thead th {
+  background: #f7faf8;
+  color: #173326;
+  font-size: 12px;
+}
+
+.comparison-table thead small,
+.comparison-table tbody small {
+  display: block;
+  margin-top: 5px;
+  color: #718078;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.comparison-table tbody th {
+  color: #173326;
+  font-size: 13px;
+}
+
+.comparison-table tbody td strong {
+  color: #173326;
+}
+
+.comparison-table .recommended-row {
+  background: #f4faf5;
+}
+
+.comparison-table .recommended-row > th {
+  border-left: 3px solid #39805a;
+}
+
+.comparison-table .total-score {
+  color: #28734b;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+@media (max-width: 850px) {
+  .car-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .car-details-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .car-details-image,
+  .car-details-image img {
+    min-height: 260px;
+    max-height: 360px;
+  }
+
+  .car-specification-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .car-filter-panel,
+  .comparison-panel,
+  .car-specification-section,
+  .registration-card {
+    padding: 20px;
+  }
+
+  .car-filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .car-filter-grid .filter-search {
+    grid-column: auto;
+  }
+
+  .filter-panel-heading,
+  .comparison-panel-heading,
+  .comparison-toolbar,
+  .comparison-actions,
+  .criterion-option {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .home-card-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .car-specification-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-steps {
+    padding: 12px 5px;
+  }
+
+  .comparison-step {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 10px;
+  }
+
+  .criterion-preference,
+  .criterion-weight {
+    width: 100%;
+  }
+}

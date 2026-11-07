@@ -2,10 +2,18 @@ import { useState } from "react";
 import { getCars, saveCars } from "../services/carService";
 
 const emptyCar = {
-  brand: "",
+  manufacturer: "",
   model: "",
   year: "",
   pricePerDay: "",
+  mileage: "",
+  fuelType: "",
+  fuelConsumptionUnit: "",
+  gearbox: "",
+  seatCount: "",
+  baggageCapacity: "",
+  fuelConsumption: "",
+  vehicleType: "",
   image: "",
 };
 
@@ -17,7 +25,9 @@ function EmployeeCars() {
   const [search, setSearch] = useState("");
 
   const filteredCars = cars.filter((car) =>
-    `${car.brand} ${car.model}`.toLowerCase().includes(search.toLowerCase()),
+    `${car.manufacturer || car.brand} ${car.model}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
   );
 
   function updateCars(nextCars) {
@@ -32,15 +42,51 @@ function EmployeeCars() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!form.brand || !form.model || !form.year || !form.pricePerDay) {
-      setError("Užpildykite visus privalomus laukus.");
+    const requiredFields = [
+      "manufacturer",
+      "model",
+      "year",
+      "pricePerDay",
+      "mileage",
+      "fuelType",
+      "fuelConsumptionUnit",
+      "gearbox",
+      "seatCount",
+      "baggageCapacity",
+      "fuelConsumption",
+      "vehicleType",
+    ];
+
+    if (requiredFields.some((field) => !String(form[field] ?? "").trim())) {
+      setError("Užpildykite visus privalomus automobilio duomenis.");
+      return;
+    }
+
+    if (
+      Number(form.year) < 1900 ||
+      Number(form.pricePerDay) <= 0 ||
+      Number(form.mileage) < 0 ||
+      Number(form.seatCount) < 1 ||
+      Number(form.baggageCapacity) < 0 ||
+      Number(form.fuelConsumption) < 0 ||
+      (form.fuelConsumptionUnit === "kWh/100 km" &&
+        Number(form.fuelConsumption) <= 0)
+    ) {
+      setError("Patikrinkite įvestus skaitinius duomenis.");
       return;
     }
 
     const car = {
       ...form,
+      brand: form.manufacturer.trim(),
+      manufacturer: form.manufacturer.trim(),
+      model: form.model.trim(),
       year: Number(form.year),
       pricePerDay: Number(form.pricePerDay),
+      mileage: Number(form.mileage),
+      seatCount: Number(form.seatCount),
+      baggageCapacity: Number(form.baggageCapacity),
+      fuelConsumption: Number(form.fuelConsumption),
     };
 
     if (editingId) {
@@ -56,7 +102,11 @@ function EmployeeCars() {
 
   function editCar(car) {
     setEditingId(car.id);
-    setForm(car);
+    setForm({
+      ...emptyCar,
+      ...car,
+      manufacturer: car.manufacturer || car.brand || "",
+    });
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -92,12 +142,12 @@ function EmployeeCars() {
         <form className="management-card" onSubmit={handleSubmit}>
           <h2>{editingId ? "Redaguoti automobilį" : "Sukurti automobilį"}</h2>
           <label>
-            Markė *
-            <input name="brand" value={form.brand} onChange={handleChange} />
+            Gamintojas *
+            <input name="manufacturer" value={form.manufacturer} onChange={handleChange} required />
           </label>
           <label>
             Modelis *
-            <input name="model" value={form.model} onChange={handleChange} />
+            <input name="model" value={form.model} onChange={handleChange} required />
           </label>
           <div className="form-row">
             <label>
@@ -108,6 +158,7 @@ function EmployeeCars() {
                 min="1900"
                 value={form.year}
                 onChange={handleChange}
+                required
               />
             </label>
             <label>
@@ -115,12 +166,111 @@ function EmployeeCars() {
               <input
                 name="pricePerDay"
                 type="number"
-                min="1"
+                min="0.01"
+                step="0.01"
                 value={form.pricePerDay}
                 onChange={handleChange}
+                required
               />
             </label>
           </div>
+          <div className="form-row">
+            <label>
+              Rida (km) *
+              <input
+                name="mileage"
+                type="number"
+                min="0"
+                value={form.mileage}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Kuro / energijos sąnaudos *
+              <input
+                name="fuelConsumption"
+                type="number"
+                min="0"
+                step="0.1"
+                value={form.fuelConsumption}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Sąnaudų vienetas *
+              <select
+                name="fuelConsumptionUnit"
+                value={form.fuelConsumptionUnit}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Pasirinkite</option>
+                <option value="l/100 km">l/100 km</option>
+                <option value="kWh/100 km">kWh/100 km</option>
+              </select>
+            </label>
+          </div>
+          <div className="form-row">
+            <label>
+              Kuro tipas *
+              <select name="fuelType" value={form.fuelType} onChange={handleChange} required>
+                <option value="">Pasirinkite</option>
+                <option value="Benzinas">Benzinas</option>
+                <option value="Dyzelinas">Dyzelinas</option>
+                <option value="Hibridas">Hibridas</option>
+                <option value="Elektra">Elektra</option>
+                <option value="Kita">Kita</option>
+              </select>
+            </label>
+            <label>
+              Pavarų dėžė *
+              <select name="gearbox" value={form.gearbox} onChange={handleChange} required>
+                <option value="">Pasirinkite</option>
+                <option value="Mechaninė">Mechaninė</option>
+                <option value="Automatinė">Automatinė</option>
+              </select>
+            </label>
+          </div>
+          <div className="form-row">
+            <label>
+              Sėdimų vietų skaičius *
+              <input
+                name="seatCount"
+                type="number"
+                min="1"
+                value={form.seatCount}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Bagažinės talpa (l) *
+              <input
+                name="baggageCapacity"
+                type="number"
+                min="0"
+                value={form.baggageCapacity}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
+          <label>
+            Automobilio tipas *
+            <select name="vehicleType" value={form.vehicleType} onChange={handleChange} required>
+              <option value="">Pasirinkite</option>
+              <option value="Miesto automobilis">Miesto automobilis</option>
+              <option value="Hečbekas">Hečbekas</option>
+              <option value="Sedanas">Sedanas</option>
+              <option value="Universalas">Universalas</option>
+              <option value="Visureigis">Visureigis</option>
+              <option value="Vienatūris">Vienatūris</option>
+              <option value="Kupė">Kupė</option>
+              <option value="Kita">Kita</option>
+            </select>
+          </label>
           <label>
             Nuotraukos URL
             <input name="image" value={form.image} onChange={handleChange} />
@@ -166,15 +316,15 @@ function EmployeeCars() {
                   {car.image ? (
                     <img
                       src={car.image}
-                      alt={`${car.brand} ${car.model}`}
+                      alt={`${car.manufacturer || car.brand} ${car.model}`}
                     />
                   ) : (
-                    <span>{car.brand}</span>
+                    <span>{car.manufacturer || car.brand}</span>
                   )}
                 </div>
                 <div>
                   <h3>
-                    {car.brand} {car.model}
+                    {car.manufacturer || car.brand} {car.model}
                   </h3>
                   <p>
                     {car.year} m. · {car.pricePerDay} € / diena

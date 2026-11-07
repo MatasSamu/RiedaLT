@@ -64,7 +64,9 @@ function Home() {
 
               <div className="car-card-info">
                 <h3>
-                  {car.brand} {car.model}
+                  <Link to={`/cars/${car.id}`}>
+                    {car.manufacturer || car.brand} {car.model}
+                  </Link>
                 </h3>
 
                 <p>Pagaminimo metai: {car.year}</p>
@@ -74,12 +76,17 @@ function Home() {
                     <strong>{car.pricePerDay} €</strong> / diena
                   </p>
 
-                  <Link
-                    to={`/reservations/new?carId=${car.id}`}
-                    className="car-reserve-button"
-                  >
-                    Rezervuoti
-                  </Link>
+                  <div className="home-card-actions">
+                    <Link to={`/cars/${car.id}`} className="car-details-link">
+                      Informacija
+                    </Link>
+                    <Link
+                      to={`/reservations/new?carId=${car.id}`}
+                      className="car-reserve-button"
+                    >
+                      Rezervuoti
+                    </Link>
+                  </div>
                 </div>
               </div>
             </article>
