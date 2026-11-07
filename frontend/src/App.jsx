@@ -11,6 +11,7 @@ import Registration from "./pages/Registration";
 import CarDetails from "./pages/CarSearchPage/CarDetails";
 import CarComparison from "./pages/CarSearchPage/CarComparison";
 import Navbar from "./components/NavBar";
+import LoginPage from "./pages/LoginPage";
 import "./App.css";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/reservations/:id/edit" element={<ReservationEdit />} />
         <Route path="/employee/cars" element={<EmployeeCars />} />
         <Route path="/admin/discount-codes" element={<AdminDiscountCodes />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

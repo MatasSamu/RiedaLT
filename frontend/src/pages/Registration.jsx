@@ -72,8 +72,18 @@ function Registration() {
     });
 
     try {
+      const storedCredentials = localStorage.getItem("riedalt-credentials");
+      const credentials = storedCredentials
+        ? JSON.parse(storedCredentials)
+        : {};
+
+      credentials[form.email.trim()] = form.password;
+
       localStorage.setItem("riedalt-users", JSON.stringify(publicProfiles));
+      localStorage.setItem("riedalt-credentials", JSON.stringify(credentials));
+
       setRegistered(true);
+      setForm(emptyForm);
       setForm(emptyForm);
     } catch {
       setError("Nepavyko išsaugoti registracijos šiame įrenginyje.");
@@ -159,14 +169,18 @@ function Registration() {
                   required
                 />
               </label>
-              {error && <p className="error-message" role="alert">{error}</p>}
+              {error && (
+                <p className="error-message" role="alert">
+                  {error}
+                </p>
+              )}
               <button type="submit" className="primary-button">
                 Registruotis
               </button>
             </form>
             <p className="registration-notice">
-              Tai demonstracinė registracija: duomenys saugomi tik naršyklėje,
-              o slaptažodis neišsaugomas. Serverinė paskyrų sistema dar
+              Tai demonstracinė registracija: duomenys saugomi tik naršyklėje, o
+              slaptažodis neišsaugomas. Serverinė paskyrų sistema dar
               neprijungta.
             </p>
           </>
