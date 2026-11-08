@@ -6,9 +6,11 @@ import {
 } from "../../services/reservationService";
 import { getCars } from "../../services/carService";
 import "./Reservation.css";
+import { getCurrentUser } from "../../services/authService";
 
 function Reservations() {
-  const currentUserId = 1;
+  const currentUser = getCurrentUser();
+  const currentUserId = currentUser?.id;
 
   const [reservations, setReservations] = useState(() =>
     getReservationsByUser(currentUserId),

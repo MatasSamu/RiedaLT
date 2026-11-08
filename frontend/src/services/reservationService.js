@@ -26,7 +26,7 @@ export function getReservationsByUser(userId) {
   const reservations = getAllReservations();
 
   return reservations.filter(
-    (reservation) => reservation.userId === userId
+    (reservation) => Number(reservation.userId) === Number(userId)
   );
 }
 
@@ -262,4 +262,20 @@ const updatedReservation = {
   saveReservations(updatedReservations);
 
   return updatedReservation;
+}
+
+
+export function isCarReserved(carId, startDate, endDate) {
+  if (!carId || !startDate || !endDate || endDate <= startDate) {
+    return false;
+  }
+
+  const reservations = getAllReservations();
+
+  return reservations.some((reservation) =>
+    Number(reservation.carId) === Number(carId) &&
+    reservation.status !== "Atšaukta" &&
+    startDate < reservation.endDate &&
+    endDate > reservation.startDate
+  );
 }

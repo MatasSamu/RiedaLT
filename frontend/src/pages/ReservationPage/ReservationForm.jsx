@@ -2,7 +2,10 @@
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getCars } from "../../services/carService";
-import { createReservation } from "../../services/reservationService";
+import {
+  createReservation,
+  isCarReserved,
+} from "../../services/reservationService";
 import { validateDiscountCode } from "../../services/discountService";
 import { getCurrentUser } from "../../services/authService";
 
@@ -47,6 +50,8 @@ function ReservationForm() {
     (originalPrice - discountValue) * 100
   ) / 100;
 
+  const carIsReserved = isCarReserved(carId, startDate, endDate);
+
   function handleApplyDiscount() {
     setDiscountError("");
     setDiscountMessage("");
@@ -72,30 +77,34 @@ function ReservationForm() {
     setDiscountError("");
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
 
-    try {
-      const user = getCurrentUser();
+function handleSubmit(e) {
+  e.preventDefault();
+  setError("");
 
-      if (!user) {
-        throw new Error("Norėdami rezervuoti, prisijunkite.");
-      }
+  try {
+    const user = getCurrentUser();
 
-      createReservation({
-        userId: user.id,
+    if (!user) {
+      throw new Error("Norėdami rezervuoti, prisijunkite.");
+    }
+
+    // Kol kas rezervacijos neišsaugome.
+    // Perduodame duomenis mokėjimo puslapiui.
+    navigate("/payment", {
+      state: {
         carId,
         startDate,
         endDate,
         discountCode: appliedDiscount?.code || "",
-      });
-
-      navigate("/reservations");
-    } catch (err) {
-      setError(err.message);
-    }
+        totalPrice,
+      },
+    });
+  } catch (err) {
+    setError(err.message);
   }
+}
+
 
   if (!car) {
     return (
@@ -224,8 +233,18 @@ function ReservationForm() {
 
         {error && <p className="error-message">{error}</p>}
 
-        <button type="submit" disabled={rentalDays <= 0}>
-          Patvirtinti rezervaciją
+                {carIsReserved && (
+          <p className="error-message">
+            Šis automobilis pasirinktomis datomis jau rezervuotas.
+            Pasirinkite kitą laikotarpį.
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={rentalDays <= 0 || carIsReserved}
+        >
+          Patvirtinti rezervaciją · {totalPrice.toFixed(2)} €
         </button>
       </form>
     </main>

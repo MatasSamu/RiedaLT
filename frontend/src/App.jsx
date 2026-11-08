@@ -21,6 +21,7 @@ import Navbar from "./components/NavBar";
 import LoginPage from "./pages/LoginPage";
 import Reviews from "./pages/ReviewsPage/Reviews";
 import AdminUsers from "./pages/AdminUsersPage/AdminUsers";
+import Payment from "./pages/PaymentPage/Payment";
 import "./App.css";
 
 function RequireAuth({ children }) {
@@ -105,6 +106,14 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/reviews" element={<Reviews />} />
+                <Route
+          path="/payment"
+          element={
+            <RequireAuth>
+              <Payment />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
