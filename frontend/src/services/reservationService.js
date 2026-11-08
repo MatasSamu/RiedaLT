@@ -1,6 +1,7 @@
 
 import { initialReservations } from "../data/mockReservations";
 import { getCars } from "./carService";
+import { validateDiscountCode, getDiscountCodes, saveDiscountCodes } from "./discountService";
 
 const STORAGE_KEY = "riedalt_reservations";
 
@@ -92,11 +93,13 @@ export function calculateRentalPrice(carId, startDate, endDate) {
   return rentalDays * car.pricePerDay;
 }
 
+
 export function createReservation({
   userId,
   carId,
   startDate,
   endDate,
+  discountCode = "",
 }) {
   const reservations = getAllReservations();
 
@@ -108,7 +111,7 @@ export function createReservation({
     throw new Error("Automobilis nerastas.");
   }
 
-  const totalPrice = calculateRentalPrice(
+  const originalPrice = calculateRentalPrice(
     carId,
     startDate,
     endDate
@@ -127,12 +130,30 @@ export function createReservation({
     throw new Error("Šis automobilis pasirinktomis datomis jau rezervuotas.");
   }
 
+  let totalPrice = originalPrice;
+  let discountAmount = 0;
+  let appliedDiscountCode = null;
+
+  if (discountCode.trim()) {
+    const discount = validateDiscountCode(discountCode);
+
+    discountAmount = Number(discount.amount);
+    appliedDiscountCode = discount.code;
+
+    totalPrice = Math.round(
+      originalPrice * (1 - discountAmount / 100) * 100
+    ) / 100;
+  }
+
   const newReservation = {
     id: Math.max(0, ...reservations.map((item) => item.id)) + 1,
     userId: Number(userId),
     carId: Number(carId),
     startDate,
     endDate,
+    originalPrice,
+    discountCode: appliedDiscountCode,
+    discountAmount,
     totalPrice,
     status: "Patvirtinta",
   };
@@ -141,8 +162,21 @@ export function createReservation({
 
   saveReservations(updatedReservations);
 
+  if (appliedDiscountCode) {
+    const codes = getDiscountCodes();
+
+    const updatedCodes = codes.map((item) =>
+      item.code === appliedDiscountCode
+        ? { ...item, uses: (item.uses || 0) + 1 }
+        : item
+    );
+
+    saveDiscountCodes(updatedCodes);
+  }
+
   return newReservation;
 }
+
 
 export function cancelReservation(id) {
   const reservations = getAllReservations();
@@ -186,11 +220,15 @@ export function updateReservation(id, { startDate, endDate }) {
   }
 
   // Patikriname datas ir perskaičiuojame kainą
-  const totalPrice = calculateRentalPrice(
-    reservation.carId,
-    startDate,
-    endDate
-  );
+const originalPrice = calculateRentalPrice(
+  reservation.carId,
+  startDate,
+  endDate
+);
+
+const totalPrice = Math.round(
+  originalPrice * (1 - (reservation.discountAmount || 0) / 100) * 100
+) / 100;
 
   // Tikriname, ar tuo laikotarpiu automobilis nėra rezervuotas
   const hasConflict = reservations.some((item) => {
@@ -209,12 +247,13 @@ export function updateReservation(id, { startDate, endDate }) {
     );
   }
 
-  const updatedReservation = {
-    ...reservation,
-    startDate,
-    endDate,
-    totalPrice,
-  };
+const updatedReservation = {
+  ...reservation,
+  startDate,
+  endDate,
+  originalPrice,
+  totalPrice,
+};
 
   const updatedReservations = reservations.map((item) =>
     item.id === Number(id) ? updatedReservation : item

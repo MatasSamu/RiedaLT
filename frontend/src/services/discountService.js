@@ -92,3 +92,42 @@ export function generateDiscountCode(amount) {
 
   return `RLT-${prefix}${amount}-${randomPart}-${controlSymbol}`;
 }
+
+
+export function validateDiscountCode(code) {
+  const normalizedCode = code.trim().toUpperCase();
+
+  if (!normalizedCode) {
+    throw new Error("Įveskite nuolaidos kodą.");
+  }
+
+  const discount = getDiscountCodes().find(
+    (item) => item.code.toUpperCase() === normalizedCode
+  );
+
+  if (!discount) {
+    throw new Error("Nuolaidos kodas nerastas.");
+  }
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const todayString = `${year}-${month}-${day}`;
+
+  if (
+    todayString < discount.validFrom ||
+    todayString > discount.validUntil
+  ) {
+    throw new Error("Nuolaidos kodo galiojimo laikas pasibaigęs arba dar neprasidėjęs.");
+  }
+
+  const amount = Number(discount.amount);
+
+  if (!Number.isFinite(amount) || amount < 1 || amount > 90) {
+    throw new Error("Neteisinga nuolaidos reikšmė.");
+  }
+
+  return discount;
+}
+

@@ -1,7 +1,10 @@
+
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
-import { getCars } from "../../services/carService";
 import { useState } from "react";
+import { getCars } from "../../services/carService";
 import { createReservation } from "../../services/reservationService";
+import { validateDiscountCode } from "../../services/discountService";
+import { getCurrentUser } from "../../services/authService";
 
 function ReservationForm() {
   const [searchParams] = useSearchParams();
@@ -12,6 +15,10 @@ function ReservationForm() {
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
+  const [discountMessage, setDiscountMessage] = useState("");
+  const [discountError, setDiscountError] = useState("");
   const [error, setError] = useState("");
 
   const today = new Date().toLocaleDateString("en-CA");
@@ -23,18 +30,65 @@ function ReservationForm() {
         (1000 * 60 * 60 * 24)
       : 0;
 
-  const totalPrice = rentalDays > 0 && car ? rentalDays * car.pricePerDay : 0;
+  const originalPrice =
+    rentalDays > 0 && car
+      ? rentalDays * car.pricePerDay
+      : 0;
+
+  const discountAmount = appliedDiscount
+    ? Number(appliedDiscount.amount)
+    : 0;
+
+  const discountValue = Math.round(
+    originalPrice * discountAmount
+  ) / 100;
+
+  const totalPrice = Math.round(
+    (originalPrice - discountValue) * 100
+  ) / 100;
+
+  function handleApplyDiscount() {
+    setDiscountError("");
+    setDiscountMessage("");
+    setAppliedDiscount(null);
+
+    try {
+      const discount = validateDiscountCode(discountCode);
+
+      setAppliedDiscount(discount);
+      setDiscountCode(discount.code);
+      setDiscountMessage(
+        `Nuolaidos kodas pritaikytas! Nuolaida: ${discount.amount}%.`
+      );
+    } catch (err) {
+      setDiscountError(err.message);
+    }
+  }
+
+  function handleRemoveDiscount() {
+    setAppliedDiscount(null);
+    setDiscountCode("");
+    setDiscountMessage("");
+    setDiscountError("");
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
     try {
+      const user = getCurrentUser();
+
+      if (!user) {
+        throw new Error("Norėdami rezervuoti, prisijunkite.");
+      }
+
       createReservation({
-        userId: 1,
+        userId: user.id,
         carId,
         startDate,
         endDate,
+        discountCode: appliedDiscount?.code || "",
       });
 
       navigate("/reservations");
@@ -91,17 +145,80 @@ function ReservationForm() {
           <input
             type="date"
             id="endDate"
-            min={startDate ? startDate : today}
+            min={startDate || today}
             required
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
 
+        <div className="form-group">
+          <label htmlFor="discountCode">Nuolaidos kodas</label>
+
+          <div style={{ display: "flex", gap: "10px" }}>
+            <input
+              type="text"
+              id="discountCode"
+              placeholder="Įveskite nuolaidos kodą"
+              value={discountCode}
+              disabled={!!appliedDiscount}
+              onChange={(e) => {
+                setDiscountCode(e.target.value);
+                setDiscountError("");
+              }}
+              style={{ flex: 1 }}
+            />
+
+            {appliedDiscount ? (
+              <button
+                type="button"
+                onClick={handleRemoveDiscount}
+              >
+                Pašalinti
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleApplyDiscount}
+              >
+                Taikyti
+              </button>
+            )}
+          </div>
+
+          {discountMessage && (
+            <p style={{ color: "#28543a", marginTop: "8px" }}>
+              {discountMessage}
+            </p>
+          )}
+
+          {discountError && (
+            <p className="error-message">{discountError}</p>
+          )}
+        </div>
+
         {rentalDays > 0 && (
           <div className="reservation-price">
             <p>Nuomos dienos: {rentalDays}</p>
-            <h3>Bendra kaina: {totalPrice} €</h3>
+
+            {appliedDiscount ? (
+              <>
+                <p>Pradinė kaina: {originalPrice.toFixed(2)} €</p>
+
+                <p style={{ color: "#28543a" }}>
+                  Nuolaida ({discountAmount}%):
+                  {" -"}{discountValue.toFixed(2)} €
+                </p>
+
+                <h3>
+                  Galutinė kaina: {totalPrice.toFixed(2)} €
+                </h3>
+              </>
+            ) : (
+              <h3>
+                Bendra kaina: {originalPrice.toFixed(2)} €
+              </h3>
+            )}
           </div>
         )}
 
