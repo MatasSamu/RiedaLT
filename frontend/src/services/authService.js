@@ -23,7 +23,7 @@ const demoEmployee = {
   password: "Darbuotojas123",
 };
 
-function getUsers() {
+export function getUsers() {
   const storedUsers = localStorage.getItem(USERS_KEY);
   return storedUsers ? JSON.parse(storedUsers) : initialUsers;
 }
@@ -140,4 +140,47 @@ export function getCurrentUser() {
 
 export function logoutUser() {
   localStorage.removeItem(CURRENT_USER_KEY);
+}
+
+
+export function updateUserRole(userId, newRole) {
+  const currentUser = getCurrentUser();
+
+  if (currentUser?.role !== "admin") {
+    throw new Error("Tik administratorius gali keisti naudotojų roles.");
+  }
+
+  const allowedRoles = ["customer", "employee", "admin"];
+
+  if (!allowedRoles.includes(newRole)) {
+    throw new Error("Neteisinga naudotojo rolė.");
+  }
+
+  const users = getUsers();
+
+  if (!Array.isArray(users)) {
+    throw new Error("Nepavyko nuskaityti naudotojų.");
+  }
+
+  const userExists = users.some(
+    (user) => String(user.id) === String(userId)
+  );
+
+  if (!userExists) {
+    throw new Error("Naudotojas nerastas.");
+  }
+
+  if (String(currentUser.id) === String(userId)) {
+    throw new Error("Negalite keisti savo rolės.");
+  }
+
+  const updatedUsers = users.map((user) =>
+    String(user.id) === String(userId)
+      ? { ...user, role: newRole }
+      : user
+  );
+
+  localStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+
+  return updatedUsers;
 }

@@ -38,9 +38,17 @@ function Navbar() {
           <>
             <span className="navbar-divider" />
             {isEmployee && <NavLink to="/employee/cars">Darbuotojas</NavLink>}
-            {isAdmin && (
-              <NavLink to="/admin/discount-codes">Administratorius</NavLink>
-            )}
+        {isAdmin && (
+          <>
+            <NavLink to="/admin/discount-codes">
+              Nuolaidų kodai
+            </NavLink>
+
+            <NavLink to="/admin/users">
+              Naudotojų sąrašas
+            </NavLink>
+          </>
+        )}
           </>
         )}
       </nav>

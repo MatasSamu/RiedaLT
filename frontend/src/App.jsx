@@ -20,6 +20,7 @@ import CarComparison from "./pages/CarSearchPage/CarComparison";
 import Navbar from "./components/NavBar";
 import LoginPage from "./pages/LoginPage";
 import Reviews from "./pages/ReviewsPage/Reviews";
+import AdminUsers from "./pages/AdminUsersPage/AdminUsers";
 import "./App.css";
 
 function RequireAuth({ children }) {
@@ -32,6 +33,22 @@ function RequireAuth({ children }) {
 
   return children;
 }
+
+
+function RequireAdmin({ children }) {
+  const user = getCurrentUser();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
 
 function App() {
   return (
@@ -70,7 +87,22 @@ function App() {
         />
         <Route path="/reservations/:id/edit" element={<ReservationEdit />} />
         <Route path="/employee/cars" element={<EmployeeCars />} />
-        <Route path="/admin/discount-codes" element={<AdminDiscountCodes />} />
+        <Route
+          path="/admin/discount-codes"
+          element={
+            <RequireAdmin>
+              <AdminDiscountCodes />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <RequireAdmin>
+              <AdminUsers />
+            </RequireAdmin>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/reviews" element={<Reviews />} />
       </Routes>
