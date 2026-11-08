@@ -20,7 +20,11 @@ function Cars() {
 
   const manufacturers = useMemo(
     () =>
-      [...new Set(cars.map((car) => car.manufacturer || car.brand).filter(Boolean))].sort(),
+      [
+        ...new Set(
+          cars.map((car) => car.manufacturer || car.brand).filter(Boolean),
+        ),
+      ].sort(),
     [cars],
   );
   const vehicleTypes = useMemo(() => uniqueValues(cars, "vehicleType"), [cars]);
@@ -74,11 +78,12 @@ function Cars() {
           <p className="home-subtitle">MŪSŲ PASIŪLYMAS</p>
           <h1>Automobiliai</h1>
           <p className="page-description">
-            Ieškokite, filtruokite ir palyginkite automobilius prieš rezervuodami.
+            Ieškokite, filtruokite ir palyginkite automobilius prieš
+            rezervuodami.
           </p>
         </div>
         <Link to="/reservations/new" className="primary-button">
-          Nauja rezervacija
+          Nauja rezervacijaaa
         </Link>
       </div>
 
@@ -86,7 +91,9 @@ function Cars() {
         <div className="filter-panel-heading">
           <div>
             <h2>Raskite tinkamą automobilį</h2>
-            <p>{filteredCars.length} iš {cars.length} automobilių</p>
+            <p>
+              {filteredCars.length} iš {cars.length} automobilių
+            </p>
           </div>
           <button type="button" className="link-button" onClick={clearFilters}>
             Išvalyti filtrus
@@ -104,30 +111,50 @@ function Cars() {
           </label>
           <label>
             Gamintojas
-            <select value={manufacturer} onChange={(event) => setManufacturer(event.target.value)}>
+            <select
+              value={manufacturer}
+              onChange={(event) => setManufacturer(event.target.value)}
+            >
               <option value="">Visi gamintojai</option>
-              {manufacturers.map((value) => <option key={value}>{value}</option>)}
+              {manufacturers.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
             </select>
           </label>
           <label>
             Kėbulo tipas
-            <select value={vehicleType} onChange={(event) => setVehicleType(event.target.value)}>
+            <select
+              value={vehicleType}
+              onChange={(event) => setVehicleType(event.target.value)}
+            >
               <option value="">Visi tipai</option>
-              {vehicleTypes.map((value) => <option key={value}>{value}</option>)}
+              {vehicleTypes.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
             </select>
           </label>
           <label>
             Kuro tipas
-            <select value={fuelType} onChange={(event) => setFuelType(event.target.value)}>
+            <select
+              value={fuelType}
+              onChange={(event) => setFuelType(event.target.value)}
+            >
               <option value="">Visi</option>
-              {fuelTypes.map((value) => <option key={value}>{value}</option>)}
+              {fuelTypes.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
             </select>
           </label>
           <label>
             Pavarų dėžė
-            <select value={gearbox} onChange={(event) => setGearbox(event.target.value)}>
+            <select
+              value={gearbox}
+              onChange={(event) => setGearbox(event.target.value)}
+            >
               <option value="">Visos</option>
-              {gearboxes.map((value) => <option key={value}>{value}</option>)}
+              {gearboxes.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
             </select>
           </label>
           <label>
@@ -186,14 +213,21 @@ function Cars() {
                 </Link>
                 <div className="car-card-info">
                   <h2>
-                    <Link to={`/cars/${car.id}`}>{make} {car.model}</Link>
+                    <Link to={`/cars/${car.id}`}>
+                      {make} {car.model}
+                    </Link>
                   </h2>
-                  <p>{car.year} m. · {car.vehicleType || "Tipas nenurodytas"}</p>
+                  <p>
+                    {car.year} m. · {car.vehicleType || "Tipas nenurodytas"}
+                  </p>
                   <p className="car-card-specs">
-                    {car.fuelType || "Kuras nenurodytas"} · {car.gearbox || "Pavarų dėžė nenurodyta"}
+                    {car.fuelType || "Kuras nenurodytas"} ·{" "}
+                    {car.gearbox || "Pavarų dėžė nenurodyta"}
                   </p>
                   <div className="car-card-bottom">
-                    <p><strong>{car.pricePerDay} €</strong> / diena</p>
+                    <p>
+                      <strong>{car.pricePerDay} €</strong> / diena
+                    </p>
                     <Link
                       to={`/reservations/new?carId=${car.id}`}
                       className="car-reserve-button"
@@ -218,7 +252,11 @@ function Cars() {
         <section className="empty-state">
           <h2>Pagal pasirinktus filtrus automobilių nerasta</h2>
           <p>Pakeiskite paieškos kriterijus arba išvalykite filtrus.</p>
-          <button type="button" className="secondary-button" onClick={clearFilters}>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={clearFilters}
+          >
             Išvalyti filtrus
           </button>
         </section>
